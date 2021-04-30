@@ -1,0 +1,141 @@
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+:root {
+	--cell-size: 100px;
+	--tic-tac-size: calc(var(--cell-size) * 0.9);
+}
+
+body {
+	margin: 0;
+}
+
+.board {
+	width: 100vw;
+	height: 100vh;
+	display: grid;
+	justify-content: center;
+	align-content: center;
+	grid-template-columns: repeat(3, auto);
+}
+
+.cell {
+	width: var(--cell-size);
+	height: var(--cell-size);
+	border: 1px solid #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	cursor: pointer;
+}
+.cell.x,
+.cell.o {
+	cursor: not-allowed;
+}
+
+/* Remove some borders */
+.cell:nth-child(-n + 3) {
+	border-top: none;
+}
+.cell:nth-last-child(-n + 3) {
+	border-bottom: none;
+}
+
+.cell:nth-child(3n) {
+	border-right: none;
+}
+.cell:nth-child(3n + 1) {
+	border-left: none;
+}
+
+/* On Hover show symbol whose turn it is for each unoccupied cell
+   For X turn and to make X symbol using pseudo elements */
+
+.cell.x::after,
+.cell.x::before {
+	background-color: #000;
+}
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after {
+	background-color: lightgray;
+}
+
+.cell.x::after,
+.cell.x::before,
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after {
+	content: "";
+	position: absolute;
+	width: calc(var(--tic-tac-size) * 0.15);
+	height: var(--tic-tac-size);
+}
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::after {
+	transform: rotate(45deg);
+}
+.cell.x::before,
+.board.x .cell:not(.x):not(.o):hover::before {
+	transform: rotate(-45deg);
+}
+
+/* Hover for ) turn and to make O symbol(cocentric circle thats why using before, after both) using pseudo elements */
+
+.cell.o::after,
+.cell.o::before {
+	background-color: #000;
+}
+.board.o .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after {
+	background-color: lightgray;
+}
+.cell.o::after,
+.cell.o::before,
+.board.o .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after {
+	content: "";
+	position: absolute;
+	border-radius: 50%;
+	width: var(--tic-tac-size);
+	height: var(--tic-tac-size);
+}
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::after {
+	--tic-tac-size: calc(var(--cell-size) * 0.6);
+	background-color: #fff;
+}
+
+/* On Game Over, Result */
+.result {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.9);
+	color: #fff;
+	font-size: 5rem;
+}
+.result.show {
+	display: flex;
+}
+button {
+	font-size: 2rem;
+	border: 1px solid black;
+	border-radius: 5px;
+	cursor: pointer;
+	padding: 0.15rem 0.5rem;
+	transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+button:hover {
+	background-color: #000;
+	color: #fff;
+	border-color: #fff;
+	transform: scale(1.3);
+}
